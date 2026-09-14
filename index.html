@@ -105,7 +105,7 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 .kidAction .icon{font-size:31px;display:block;margin-bottom:6px}.kidAction b{font-size:13px}.kidAction small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
 .walletJars{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
 .jar{border-radius:24px;padding:13px 7px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--card)}
-.jarIcon{font-size:30px;display:block}.jarLabel{font-size:11px;color:var(--muted);margin-top:3px}.jarMoney{font-size:16px;font-weight:900;margin-top:3px}
+.jarIcon{font-size:30px;display:block}.jarLabel{font-size:11px;color:var(--muted);margin-top:3px}.jarMoney{font-size:16px;font-weight:900;margin-top:3px}.jarAdd{margin-top:8px;border:0;border-radius:999px;padding:7px 10px;background:var(--card);color:var(--ink);font-size:11px;font-weight:800;box-shadow:0 4px 12px rgba(82,65,89,.08)}
 .jar1{background:linear-gradient(180deg,var(--accentSoft),var(--card))}.jar2{background:linear-gradient(180deg,#f4efff,var(--card))}.jar3{background:linear-gradient(180deg,#eef9ff,var(--card))}
 :root[data-mode="dark"] .jar2,:root[data-mode="dark"] .jar3{background:linear-gradient(180deg,#352e39,var(--card))}
 .kidSectionTitle{display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px}
@@ -157,9 +157,9 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
   <div class="section">
     <div class="kidSectionTitle"><h2>💰 我的三個錢錢罐</h2><span>現在一共有 <b id="totalMoney">$0</b></span></div>
     <div class="walletJars">
-      <div class="jar jar1"><span class="jarIcon">🍭</span><div class="jarLabel">可以花</div><div class="jarMoney" id="spendMoney">$0</div></div>
-      <div class="jar jar2"><span class="jarIcon">🐷</span><div class="jarLabel">存起來</div><div class="jarMoney" id="saveMoney">$0</div></div>
-      <div class="jar jar3"><span class="jarIcon">💝</span><div class="jarLabel">分享</div><div class="jarMoney" id="shareMoney">$0</div></div>
+      <div class="jar jar1"><span class="jarIcon">🍭</span><div class="jarLabel">可以花</div><div class="jarMoney" id="spendMoney">$0</div><button class="jarAdd" onclick="quickWalletAdd('spend')">＋ 加錢</button></div>
+      <div class="jar jar2"><span class="jarIcon">🐷</span><div class="jarLabel">存起來</div><div class="jarMoney" id="saveMoney">$0</div><button class="jarAdd" onclick="quickWalletAdd('save')">＋ 加錢</button></div>
+      <div class="jar jar3"><span class="jarIcon">💝</span><div class="jarLabel">分享</div><div class="jarMoney" id="shareMoney">$0</div><button class="jarAdd" onclick="quickWalletAdd('share')">＋ 加錢</button></div>
     </div>
   </div>
 
@@ -327,7 +327,7 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='kidsMoneyAppV7_6', OLD=['kidsMoneyAppV7_5','kidsMoneyAppV7_4','kidsMoneyAppV7_3','kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
+const KEY='kidsMoneyAppV7_7', OLD=['kidsMoneyAppV7_6','kidsMoneyAppV7_5','kidsMoneyAppV7_4','kidsMoneyAppV7_3','kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
 const defaultData={
   profile:{name:'小小理財家',avatar:'🐰'},
   wallets:{spend:0,save:0,share:0},
@@ -426,6 +426,13 @@ function addTx(){
   $('amount').value='';$('note').value='';checkBadges();save();toast('記好了！✨')
 }
 function quickAdd(type){go('record');$('type').value=type;setTimeout(()=>$('amount').focus(),80)}
+function quickWalletAdd(wallet){
+  go('record');
+  $('type').value='income';
+  $('wallet').value=wallet;
+  $('category').value=data.categories.includes('零用錢')?'零用錢':data.categories[0];
+  setTimeout(()=>$('amount').focus(),80);
+}
 
 function addTask(){
   const name=$('taskName').value.trim(),reward=Number($('taskReward').value),wallet=$('taskWallet').value;
