@@ -340,7 +340,7 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='kidsMoneyAppV7_4', OLD=['kidsMoneyAppV7_3','kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
+const KEY='kidsMoneyAppV7_5', OLD=['kidsMoneyAppV7_4','kidsMoneyAppV7_3','kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
 const defaultData={
   profile:{name:'小小理財家',avatar:'🐰'},
   wallets:{spend:0,save:0,share:0},
@@ -415,12 +415,6 @@ function rankingHtml(month,limit=99){
   return arr.map(([name,val],i)=>`<div class="rankrow"><div class="rankhead"><span>${i+1}. ${esc(name)}</span><b>${fmt(val)}</b></div><div class="rankbar"><i style="width:${Math.max(6,val/max*100)}%"></i></div></div>`).join('');
 }
 function renderHome(){
-  const m=monthTotals(monthNow());
-  $('mIncome').textContent=fmt(m.income);
-  $('mExpense').textContent=fmt(m.expense);
-  $('mSaved').textContent=fmt(m.saved);
-  $('homeRanking').innerHTML=rankingHtml(monthNow(),3);
-
   const ot=data.tasks.filter(t=>!t.done).slice(0,2);
   $('homeTasks').innerHTML=ot.length
     ? ot.map(t=>`<div class="task"><div><b>${esc(t.name)}</b><div class="mini">完成可以得到 ${fmt(t.reward)} → ${walletName(t.wallet)}</div></div><button class="amountbtn" onclick="completeTask(${t.id})">我完成了！</button></div>`).join('')
