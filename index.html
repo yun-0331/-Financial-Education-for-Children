@@ -87,6 +87,37 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 .calDot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:3px}.inDot{background:#55a878}.outDot{background:#cf5f7d}.taskDot{background:#8f79c9}
 .summaryItem{padding:10px 0;border-bottom:1px solid var(--line)}.summaryItem:last-child{border-bottom:0}
 
+
+/* v7.4 playful child-home refresh */
+.kidHomeTop{display:grid;grid-template-columns:1fr 112px;gap:12px;align-items:stretch}
+.kidBubble{background:linear-gradient(135deg,var(--accentSoft),var(--card));border:1px solid var(--line);border-radius:28px;padding:18px;box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kidBubble:before{content:"★";position:absolute;right:18px;top:12px;font-size:24px;opacity:.35}
+.kidBubble:after{content:"✦";position:absolute;right:50px;bottom:18px;font-size:17px;opacity:.25}
+.kidHello{font-size:13px;color:var(--muted)}
+.kidBig{font-size:30px;font-weight:900;margin:5px 0}
+.kidLine{font-size:13px;line-height:1.5}
+.mascotCard{background:linear-gradient(145deg,var(--accent),var(--accent2));border-radius:28px;display:grid;place-items:center;box-shadow:var(--shadow);min-height:132px;position:relative;overflow:hidden}
+.mascotFace{font-size:58px;filter:drop-shadow(0 5px 8px rgba(0,0,0,.08))}
+.mascotSpark{position:absolute;font-size:18px;opacity:.75}.s1x{top:12px;left:14px}.s2x{bottom:12px;right:14px}
+.kidQuickTitle{font-size:15px;font-weight:900;margin:0 0 9px 2px}
+.kidQuickGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.kidAction{border:0;border-radius:24px;padding:15px 8px;background:var(--card);box-shadow:var(--shadow);color:var(--ink);min-height:96px}
+.kidAction .icon{font-size:31px;display:block;margin-bottom:6px}.kidAction b{font-size:13px}.kidAction small{display:block;font-size:10px;color:var(--muted);margin-top:3px}
+.walletJars{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.jar{border-radius:24px;padding:13px 7px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line);background:var(--card)}
+.jarIcon{font-size:30px;display:block}.jarLabel{font-size:11px;color:var(--muted);margin-top:3px}.jarMoney{font-size:16px;font-weight:900;margin-top:3px}
+.jar1{background:linear-gradient(180deg,var(--accentSoft),var(--card))}.jar2{background:linear-gradient(180deg,#f4efff,var(--card))}.jar3{background:linear-gradient(180deg,#eef9ff,var(--card))}
+:root[data-mode="dark"] .jar2,:root[data-mode="dark"] .jar3{background:linear-gradient(180deg,#352e39,var(--card))}
+.kidSectionTitle{display:flex;align-items:center;justify-content:space-between;margin:0 2px 10px}
+.kidSectionTitle h2{font-size:17px;margin:0}.kidSectionTitle span{font-size:12px;color:var(--muted)}
+.goalHero{border-radius:26px;padding:15px;background:linear-gradient(135deg,#fff8df,var(--card));border:1px solid var(--line);box-shadow:var(--shadow)}
+:root[data-mode="dark"] .goalHero{background:linear-gradient(135deg,#3a3428,var(--card))}
+.taskHero{border-radius:26px;padding:15px;background:linear-gradient(135deg,#eef9ff,var(--card));border:1px solid var(--line);box-shadow:var(--shadow)}
+:root[data-mode="dark"] .taskHero{background:linear-gradient(135deg,#2e353b,var(--card))}
+.kidTinyStats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.kidTinyStat{border-radius:18px;padding:10px 6px;text-align:center;background:var(--card);border:1px solid var(--line)}
+.kidTinyStat span{font-size:18px;display:block}.kidTinyStat b{display:block;font-size:13px;margin-top:3px}.kidTinyStat small{font-size:10px;color:var(--muted)}
+
 </style>
 </head>
 <body>
@@ -100,29 +131,60 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 
 <main>
 <section id="home" class="page active">
-  <div class="heroKid">
-    <div class="heroKidTitle">今天也來照顧自己的錢錢 ✨</div>
-    <div class="heroKidMoney" id="totalMoney">$0</div>
-    <div class="wallets">
-      <div class="wallet w1">💗 可以花<b id="spendMoney">$0</b></div>
-      <div class="wallet w2">🌟 存起來<b id="saveMoney">$0</b></div>
-      <div class="wallet w3">🤝 分享<b id="shareMoney">$0</b></div>
+
+  <div class="kidHomeTop">
+    <div class="kidBubble">
+      <div class="kidHello">嗨！今天也一起照顧錢錢吧 ✨</div>
+      <div class="kidBig" id="homeKidName">小小理財家</div>
+      <div class="kidLine">每一次「先想一下再花」，都會讓你的願望更靠近一點 💗</div>
+    </div>
+    <div class="mascotCard">
+      <span class="mascotSpark s1x">⭐</span>
+      <div class="mascotFace" id="homeMascot">🐰</div>
+      <span class="mascotSpark s2x">✨</span>
     </div>
   </div>
 
   <div class="section">
-    <div class="quickGrid">
-      <button class="quickKid" onclick="quickAdd('income')"><span>🪙</span><b>收到錢</b></button>
-      <button class="quickKid" onclick="quickAdd('expense')"><span>🛍️</span><b>花了一筆</b></button>
-      <button class="quickKid" onclick="go('calendar')"><span>📅</span><b>看看日曆</b></button>
+    <div class="kidQuickTitle">今天想做什麼？</div>
+    <div class="kidQuickGrid">
+      <button class="kidAction" onclick="quickAdd('income')"><span class="icon">🪙</span><b>收到錢</b><small>零用錢・獎勵</small></button>
+      <button class="kidAction" onclick="quickAdd('expense')"><span class="icon">🛍️</span><b>花了一筆</b><small>記下今天花費</small></button>
+      <button class="kidAction" onclick="go('calendar')"><span class="icon">📅</span><b>看看日曆</b><small>今天做了什麼</small></button>
     </div>
   </div>
 
-  <div class="section"><div class="section-title"><h2>🎯 最想完成的願望</h2><button class="link" onclick="go('goals')">全部願望</button></div><div class="card" id="homeGoals"></div></div>
-  <div class="section"><div class="section-title"><h2>✅ 今天的小任務</h2><button class="link" onclick="go('tasks')">全部任務</button></div><div class="card" id="homeTasks"></div></div>
-  <div class="section"><div class="section-title"><h2>🏆 本月花費排行</h2><button class="link" onclick="go('review')">完整</button></div><div class="card" id="homeRanking"></div></div>
-  <div class="section"><div class="section-title"><h2>📊 本月小總覽</h2><button class="link" onclick="go('review')">回顧</button></div>
-    <div class="card"><div class="stats"><div class="stat s1">收入<b id="mIncome">$0</b></div><div class="stat s2">花費<b id="mExpense">$0</b></div><div class="stat s3">存款<b id="mSaved">$0</b></div></div></div>
+  <div class="section">
+    <div class="kidSectionTitle"><h2>💰 我的三個錢錢罐</h2><span>現在一共有 <b id="totalMoney">$0</b></span></div>
+    <div class="walletJars">
+      <div class="jar jar1"><span class="jarIcon">🍭</span><div class="jarLabel">可以花</div><div class="jarMoney" id="spendMoney">$0</div></div>
+      <div class="jar jar2"><span class="jarIcon">🐷</span><div class="jarLabel">存起來</div><div class="jarMoney" id="saveMoney">$0</div></div>
+      <div class="jar jar3"><span class="jarIcon">💝</span><div class="jarLabel">分享</div><div class="jarMoney" id="shareMoney">$0</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="kidSectionTitle"><h2>🎯 我最想完成的願望</h2><button class="link" onclick="go('goals')">看全部</button></div>
+    <div class="goalHero" id="homeGoals"></div>
+  </div>
+
+  <div class="section">
+    <div class="kidSectionTitle"><h2>✅ 今天的小任務</h2><button class="link" onclick="go('tasks')">去任務</button></div>
+    <div class="taskHero" id="homeTasks"></div>
+  </div>
+
+  <div class="section">
+    <div class="kidSectionTitle"><h2>🌈 這個月的小成果</h2><button class="link" onclick="go('review')">看回顧</button></div>
+    <div class="kidTinyStats">
+      <div class="kidTinyStat"><span>🪙</span><b id="mIncome">$0</b><small>收到的錢</small></div>
+      <div class="kidTinyStat"><span>🛍️</span><b id="mExpense">$0</b><small>花掉的錢</small></div>
+      <div class="kidTinyStat"><span>🌟</span><b id="mSaved">$0</b><small>存進去</small></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="kidSectionTitle"><h2>🏆 這個月最常花在哪</h2><button class="link" onclick="go('review')">完整排行</button></div>
+    <div class="card" id="homeRanking"></div>
   </div>
 </section>
 
@@ -278,7 +340,7 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='kidsMoneyAppV7_3', OLD=['kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
+const KEY='kidsMoneyAppV7_4', OLD=['kidsMoneyAppV7_3','kidsMoneyAppV6','kidsMoneyAppV7_1','kidsMoneyAppV7','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
 const defaultData={
   profile:{name:'小小理財家',avatar:'🐰'},
   wallets:{spend:0,save:0,share:0},
@@ -324,7 +386,7 @@ applyAppearance();
 function render(){
   $('spendMoney').textContent=fmt(data.wallets.spend);$('saveMoney').textContent=fmt(data.wallets.save);$('shareMoney').textContent=fmt(data.wallets.share);
   $('totalMoney').textContent=fmt(data.wallets.spend+data.wallets.save+data.wallets.share);
-  $('headerAvatar').textContent=data.profile.avatar||'🐰';$('helloName').textContent=(data.profile.name||'小小理財家')+'的錢錢';
+  $('headerAvatar').textContent=data.profile.avatar||'🐰';$('helloName').textContent=(data.profile.name||'小小理財家')+'的錢錢';if($('homeKidName'))$('homeKidName').textContent=data.profile.name||'小小理財家';if($('homeMascot'))$('homeMascot').textContent=data.profile.avatar||'🐰';
   $('childName').value=data.profile.name||'';$('avatarSelect').value=data.profile.avatar||'🐰';
   $('modeSelect').value=data.appearance.mode||'light';$('themeSelect').value=data.appearance.theme||'pink';
   $('pinStatus').textContent=data.security.pin?'目前：PIN 保護已開啟':'目前：尚未開啟 PIN 保護';
@@ -353,10 +415,21 @@ function rankingHtml(month,limit=99){
   return arr.map(([name,val],i)=>`<div class="rankrow"><div class="rankhead"><span>${i+1}. ${esc(name)}</span><b>${fmt(val)}</b></div><div class="rankbar"><i style="width:${Math.max(6,val/max*100)}%"></i></div></div>`).join('');
 }
 function renderHome(){
-  const m=monthTotals(monthNow());$('mIncome').textContent=fmt(m.income);$('mExpense').textContent=fmt(m.expense);$('mSaved').textContent=fmt(m.saved);
+  const m=monthTotals(monthNow());
+  $('mIncome').textContent=fmt(m.income);
+  $('mExpense').textContent=fmt(m.expense);
+  $('mSaved').textContent=fmt(m.saved);
   $('homeRanking').innerHTML=rankingHtml(monthNow(),3);
-  const ot=data.tasks.filter(t=>!t.done).slice(0,3);$('homeTasks').innerHTML=ot.length?ot.map(taskHtml).join(''):'<div class="empty">今天沒有任務 🌱</div>';
-  const gs=sortedGoals().filter(g=>!g.done).slice(0,1);$('homeGoals').innerHTML=gs.length?gs.map(goalHtml).join(''):'<div class="empty">還沒有願望 🎁</div>';
+
+  const ot=data.tasks.filter(t=>!t.done).slice(0,2);
+  $('homeTasks').innerHTML=ot.length
+    ? ot.map(t=>`<div class="task"><div><b>${esc(t.name)}</b><div class="mini">完成可以得到 ${fmt(t.reward)} → ${walletName(t.wallet)}</div></div><button class="amountbtn" onclick="completeTask(${t.id})">我完成了！</button></div>`).join('')
+    : '<div class="empty">今天沒有任務，可以輕鬆一下 🌱</div>';
+
+  const gs=sortedGoals().filter(g=>!g.done).slice(0,1);
+  $('homeGoals').innerHTML=gs.length
+    ? gs.map(goalHtml).join('')
+    : '<div class="empty">還沒有願望，去設定一個想完成的小目標吧 🎁</div>';
 }
 
 function txHtml(t){
