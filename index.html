@@ -174,15 +174,15 @@ nav button{border:0;background:transparent;padding:8px 1px;border-radius:16px;co
 <div class="toast" id="toast"></div>
 
 <script>
-const KEY='kidsMoneyAppV7', OLD=['kidsMoneyAppV6','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
+const KEY='kidsMoneyAppV7_1', OLD=['kidsMoneyAppV7','kidsMoneyAppV6','kidsMoneyAppV5','kidsMoneyAppV4','kidsMoneyAppV3','kidsMoneyAppV2'];
 const defaultData={
  profile:{name:'小小理財家',avatar:'🐰'},wallets:{spend:0,save:0,share:0},tx:[],tasks:[],goals:[],badges:[],transfers:[],
- categories:['零用錢','獎勵','文具','點心','玩具','其他'],appearance:{mode:'light',theme:'pink'},security:{pin:''}
+ categories:['零用錢','獎勵','文具','點心','玩具','其他'],appearance:{mode:'light',theme:'pink'}
 };
 function normalize(x){
   const d={...JSON.parse(JSON.stringify(defaultData)),...x};
   d.profile=x.profile||defaultData.profile;d.wallets=x.wallets||defaultData.wallets;d.tx=x.tx||[];d.tasks=x.tasks||[];d.goals=(x.goals||[]).map(g=>({...g,priority:String(g.priority||2)}));
-  d.badges=x.badges||[];d.transfers=x.transfers||[];d.categories=x.categories||[...defaultData.categories];d.appearance=x.appearance||{...defaultData.appearance};d.security=x.security||{pin:''};
+  d.badges=x.badges||[];d.transfers=x.transfers||[];d.categories=x.categories||[...defaultData.categories];d.appearance=x.appearance||{...defaultData.appearance};
   return d;
 }
 function migrate(){
