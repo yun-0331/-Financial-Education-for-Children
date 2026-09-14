@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <meta name="theme-color" content="#f8eef7" />
+  <title>我的錢錢小管家</title>
+  <style>
+    :root{
+      --bg:#fffaf7; --card:#ffffff; --pink:#f7c9d9; --purple:#d9cff6; --blue:#bfe4f7;
+      --yellow:#ffe7a9; --mint:#ccefdc; --ink:#514a56; --muted:#8b8390; --line:#eee7ee;
+      --shadow:0 10px 30px rgba(82,65,89,.09); --radius:24px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans TC",sans-serif;background:linear-gradient(180deg,#fff8fb 0,#fffdf8 100%);color:var(--ink)}
+    button,input,select{font:inherit}
+    .app{max-width:520px;margin:0 auto;min-height:100vh;padding-bottom:92px}
+    header{padding:22px 18px 10px}
+    .hello{display:flex;justify-content:space-between;gap:12px;align-items:center}
+    .avatar{width:52px;height:52px;border-radius:18px;background:linear-gradient(135deg,var(--pink),var(--purple));display:grid;place-items:center;font-size:28px;box-shadow:var(--shadow)}
+    h1{font-size:24px;margin:0}.sub{color:var(--muted);font-size:14px;margin-top:4px}
+    .pill{border:0;background:#fff;padding:10px 13px;border-radius:999px;box-shadow:var(--shadow);color:var(--ink)}
+    main{padding:8px 16px 20px}
+    .balance{background:linear-gradient(135deg,#fff,#fdf3fb);border:1px solid #f3e7f0;border-radius:30px;padding:20px;box-shadow:var(--shadow)}
+    .label{font-size:13px;color:var(--muted)} .money{font-size:36px;font-weight:800;margin:4px 0 12px}
+    .wallets{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+    .wallet{padding:12px;border-radius:18px;text-align:center;font-size:12px}.wallet b{display:block;font-size:17px;margin-top:4px}
+    .w1{background:#fff1f6}.w2{background:#f2efff}.w3{background:#eef9ff}
+    .actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+    .action{border:0;border-radius:20px;padding:16px;font-weight:700;box-shadow:var(--shadow)}
+    .income{background:var(--mint)}.expense{background:var(--pink)}
+    .section{margin-top:18px}.section-title{display:flex;justify-content:space-between;align-items:center;margin:0 2px 10px}
+    .section-title h2{font-size:18px;margin:0}.link{border:0;background:transparent;color:#8a73c7}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+    .goal{display:flex;gap:13px;align-items:center}.goal-emoji{font-size:34px;width:52px;height:52px;border-radius:18px;background:#fff5cf;display:grid;place-items:center}
+    .goal-info{flex:1}.goal-title{font-weight:800}.goal-meta{font-size:12px;color:var(--muted);margin-top:3px}
+    .bar{height:10px;background:#f1edf2;border-radius:999px;overflow:hidden;margin-top:9px}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--pink),var(--purple));border-radius:999px}
+    .week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}.day{background:#faf7fb;border-radius:14px;padding:8px 3px;text-align:center;font-size:11px}.day.done{background:#edf9f2}.dot{font-size:17px}
+    .tx{display:flex;justify-content:space-between;gap:10px;padding:12px 2px;border-bottom:1px solid var(--line)}.tx:last-child{border-bottom:0}.tx small{display:block;color:var(--muted);margin-top:3px}.plus{color:#379260}.minus{color:#cf5f7d}
+    .badges{display:flex;gap:10px;overflow:auto;padding-bottom:4px}.badge{min-width:92px;text-align:center;background:#fff8dd;border-radius:20px;padding:12px}.badge span{font-size:28px;display:block}
+    nav{position:fixed;left:50%;bottom:10px;transform:translateX(-50%);width:min(490px,calc(100% - 20px));display:grid;grid-template-columns:repeat(4,1fr);gap:4px;background:rgba(255,255,255,.92);backdrop-filter:blur(14px);padding:8px;border-radius:24px;box-shadow:0 12px 40px rgba(65,48,75,.18);z-index:20}
+    nav button{border:0;background:transparent;padding:9px 2px;border-radius:16px;color:var(--muted);font-size:12px}nav button.active{background:#f3ecfb;color:#684fa0;font-weight:800}
+    .page{display:none}.page.active{display:block}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+    input,select{width:100%;padding:13px;border:1px solid var(--line);border-radius:16px;background:#fff;color:var(--ink)}
+    .primary{width:100%;border:0;border-radius:18px;padding:14px;font-weight:800;background:linear-gradient(135deg,var(--pink),var(--purple));color:#4e3f59}
+    .mini{font-size:12px;color:var(--muted)}
+    .empty{text-align:center;color:var(--muted);padding:18px}
+    .toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:#514a56;color:#fff;padding:10px 14px;border-radius:999px;opacity:0;pointer-events:none;transition:.2s;z-index:30}.toast.show{opacity:1}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="hello">
+      <div>
+        <div class="sub">小小理財家 ✨</div>
+        <h1>我的錢錢小管家</h1>
+      </div>
+      <div class="avatar">🐰</div>
+    </div>
+  </header>
+
+  <main>
+    <section id="home" class="page active">
+      <div class="balance">
+        <div class="label">我現在有</div>
+        <div class="money" id="totalMoney">$0</div>
+        <div class="wallets">
+          <div class="wallet w1">💗 可以花<b id="spendMoney">$0</b></div>
+          <div class="wallet w2">🌟 存起來<b id="saveMoney">$0</b></div>
+          <div class="wallet w3">🤝 分享<b id="shareMoney">$0</b></div>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button class="action income" onclick="quickAdd('income')">＋ 我有收入</button>
+        <button class="action expense" onclick="quickAdd('expense')">－ 我有花錢</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2>🎯 我的存錢願望</h2><button class="link" onclick="go('goal')">設定</button></div>
+        <div class="card" id="goalCard"></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2>📅 本週小挑戰</h2></div>
+        <div class="card">
+          <div class="mini" style="margin-bottom:10px">每天記一筆錢錢，連續 7 天就拿到徽章！</div>
+          <div class="week" id="week"></div>
+        </div>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2>🏅 我的徽章</h2></div>
+        <div class="badges" id="badges"></div>
+      </div>
+    </section>
+
+    <section id="record" class="page">
+      <div class="section-title"><h2>🧾 記一筆錢錢</h2></div>
+      <div class="card">
+        <div class="form-row">
+          <select id="type"><option value="income">收入</option><option value="expense">支出</option></select>
+          <input id="amount" inputmode="numeric" placeholder="金額" />
+        </div>
+        <div class="form-row">
+          <select id="wallet">
+            <option value="spend">可以花</option>
+            <option value="save">存起來</option>
+            <option value="share">分享</option>
+          </select>
+          <input id="date" type="date" />
+        </div>
+        <input id="note" placeholder="這筆是什麼？例：零用錢、文具" style="margin-bottom:10px" />
+        <button class="primary" onclick="addTx()">存起來</button>
+      </div>
+
+      <div class="section">
+        <div class="section-title"><h2>最近紀錄</h2></div>
+        <div class="card" id="txList"></div>
+      </div>
+    </section>
+
+    <section id="goal" class="page">
+      <div class="section-title"><h2>🎯 我的願望</h2></div>
+      <div class="card">
+        <input id="goalName" placeholder="想買什麼？例：樂高" style="margin-bottom:10px" />
+        <div class="form-row">
+          <input id="goalTarget" inputmode="numeric" placeholder="需要多少錢" />
+          <input id="goalEmoji" value="🎁" maxlength="2" />
+        </div>
+        <button class="primary" onclick="saveGoal()">儲存願望</button>
+      </div>
+      <div class="section">
+        <div class="section-title"><h2>存錢小提示</h2></div>
+        <div class="card">
+          <div>💡 每拿到一次零用錢，可以先把一小部分放進「存起來」。</div>
+          <div style="margin-top:10px">💡 買東西前先問自己：「我真的需要嗎？還是只是現在很想要？」</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="learn" class="page">
+      <div class="section-title"><h2>📚 理財小學堂</h2></div>
+      <div class="card">
+        <b>三個錢包怎麼用？</b>
+        <p>💗 <b>可以花：</b>日常小東西、點心、文具。</p>
+        <p>🌟 <b>存起來：</b>為了比較大的願望慢慢存。</p>
+        <p>🤝 <b>分享：</b>送禮、幫助別人，或和家人一起做有意義的事。</p>
+      </div>
+      <div class="section">
+        <div class="card">
+          <b>今天的小問題</b>
+          <p id="quizQ">你有 100 元，看到一個 90 元玩具，但你正在存 500 元的願望。你會怎麼做？</p>
+          <select id="quizA" style="margin:8px 0 10px">
+            <option>先想 10 分鐘，再決定</option>
+            <option>立刻買</option>
+            <option>先看看願望還差多少</option>
+          </select>
+          <button class="primary" onclick="toast('沒有唯一答案，重點是「先想再花」 👍')">我想好了</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <nav>
+    <button class="active" data-page="home" onclick="go('home',this)">🏠<br>首頁</button>
+    <button data-page="record" onclick="go('record',this)">✏️<br>記帳</button>
+    <button data-page="goal" onclick="go('goal',this)">🎯<br>願望</button>
+    <button data-page="learn" onclick="go('learn',this)">📚<br>學習</button>
+  </nav>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const KEY='kidsMoneyAppV1';
+let data = JSON.parse(localStorage.getItem(KEY) || 'null') || {
+  wallets:{spend:0,save:0,share:0},
+  tx:[],
+  goal:{name:'我的第一個願望',target:1000,emoji:'🎁'},
+  badges:[]
+};
+
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(KEY,JSON.stringify(data)); render();}
+function fmt(n){return '$'+Math.round(n).toLocaleString('zh-TW')}
+function today(){return new Date().toISOString().slice(0,10)}
+$('date').value=today();
+
+function render(){
+  $('spendMoney').textContent=fmt(data.wallets.spend);
+  $('saveMoney').textContent=fmt(data.wallets.save);
+  $('shareMoney').textContent=fmt(data.wallets.share);
+  $('totalMoney').textContent=fmt(data.wallets.spend+data.wallets.save+data.wallets.share);
+
+  const g=data.goal, saved=data.wallets.save, pct=Math.max(0,Math.min(100,g.target? saved/g.target*100:0));
+  $('goalCard').innerHTML = `
+    <div class="goal">
+      <div class="goal-emoji">${g.emoji||'🎁'}</div>
+      <div class="goal-info">
+        <div class="goal-title">${escapeHtml(g.name||'我的願望')}</div>
+        <div class="goal-meta">已存 ${fmt(saved)} ／ 目標 ${fmt(g.target||0)} ・ 還差 ${fmt(Math.max(0,(g.target||0)-saved))}</div>
+        <div class="bar"><i style="width:${pct}%"></i></div>
+      </div>
+    </div>`;
+
+  const recent=data.tx.slice().reverse().slice(0,12);
+  $('txList').innerHTML = recent.length ? recent.map(t=>`
+    <div class="tx">
+      <div>${t.type==='income'?'🪙':'🛍️'} ${escapeHtml(t.note||'沒有備註')}<small>${t.date} ・ ${walletName(t.wallet)}</small></div>
+      <b class="${t.type==='income'?'plus':'minus'}">${t.type==='income'?'+':'-'}${fmt(t.amount)}</b>
+    </div>`).join('') : `<div class="empty">還沒有紀錄，先記第一筆吧 🌱</div>`;
+
+  renderWeek(); renderBadges();
+  $('goalName').value=g.name||''; $('goalTarget').value=g.target||''; $('goalEmoji').value=g.emoji||'🎁';
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+function walletName(w){return ({spend:'可以花',save:'存起來',share:'分享'})[w]}
+function addTx(){
+  const type=$('type').value, wallet=$('wallet').value, amount=Number($('amount').value), note=$('note').value.trim(), date=$('date').value||today();
+  if(!amount || amount<=0) return toast('先輸入金額喔');
+  if(type==='expense' && data.wallets[wallet] < amount) return toast('這個錢包的錢不夠喔');
+  data.wallets[wallet] += type==='income'?amount:-amount;
+  data.tx.push({id:Date.now(),type,wallet,amount,note,date});
+  $('amount').value=''; $('note').value='';
+  checkBadges(); save(); toast('記好了！✨');
+}
+function quickAdd(type){
+  go('record'); $('type').value=type; setTimeout(()=>$('amount').focus(),80)
+}
+function saveGoal(){
+  const target=Number($('goalTarget').value);
+  if(!target||target<=0) return toast('請輸入願望需要的金額');
+  data.goal={name:$('goalName').value.trim()||'我的願望',target,emoji:$('goalEmoji').value||'🎁'};
+  save(); toast('願望設定完成 🎯');
+}
+function go(id,btn){
+  document.querySelectorAll('.page').forEach(x=>x.classList.remove('active'));
+  $(id).classList.add('active');
+  document.querySelectorAll('nav button').forEach(x=>x.classList.toggle('active',x.dataset.page===id));
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function toast(msg){
+  const t=$('toast'); t.textContent=msg; t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),1800)
+}
+function renderWeek(){
+  const arr=[]; const now=new Date();
+  for(let i=6;i>=0;i--){ const d=new Date(now); d.setDate(now.getDate()-i); const key=d.toISOString().slice(0,10); const done=data.tx.some(t=>t.date===key); arr.push({key,done,label:['日','一','二','三','四','五','六'][d.getDay()]}); }
+  $('week').innerHTML=arr.map(d=>`<div class="day ${d.done?'done':''}"><div>週${d.label}</div><div class="dot">${d.done?'⭐':'○'}</div></div>`).join('');
+}
+function checkBadges(){
+  const count=data.tx.length;
+  const income=data.tx.filter(t=>t.type==='income').length;
+  const saveIncome=data.tx.filter(t=>t.type==='income'&&t.wallet==='save').length;
+  if(count>=1&&!data.badges.includes('first'))data.badges.push('first');
+  if(count>=5&&!data.badges.includes('five'))data.badges.push('five');
+  if(saveIncome>=3&&!data.badges.includes('saver'))data.badges.push('saver');
+  if(income>=10&&!data.badges.includes('keeper'))data.badges.push('keeper');
+}
+function renderBadges(){
+  const all={
+    first:['🌱','第一筆','完成第一筆紀錄'],
+    five:['⭐','小小高手','完成 5 筆紀錄'],
+    saver:['🐷','存錢豬','3 次把錢存起來'],
+    keeper:['🏆','錢錢隊長','累積 10 次收入紀錄']
+  };
+  const got=data.badges;
+  $('badges').innerHTML=Object.entries(all).map(([k,v])=>`<div class="badge" style="${got.includes(k)?'':'filter:grayscale(1);opacity:.45'}"><span>${v[0]}</span><b>${v[1]}</b><div class="mini">${v[2]}</div></div>`).join('');
+}
+render();
+</script>
+</body>
+</html>
